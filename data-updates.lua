@@ -1,10 +1,10 @@
 GeneratePowerPoleLights = function()
 	local poleLights = {}
 	local powerPoleWireReachLightedMultiplier = tonumber(settings.startup["power-pole-wire-reach-lighted-percent"].value) / 100
-	for _, pole in pairs(data.raw["electric-pole"]) do
-		local poleLightRange = powerPoleWireReachLightedMultiplier * pole.supply_area_distance * 5
+	for supply_area_distance=1,64 do
+		local poleLightRange = powerPoleWireReachLightedMultiplier * supply_area_distance * 5
 		local poleLight = table.deepcopy(data.raw["lamp"]["small-lamp"])
-		poleLight.name = pole.name .. "-light"
+		poleLight.name = "light-" .. supply_area_distance
 		poleLight.collision_mask = {"resource-layer"}
 		poleLight.flags = {"not-blueprintable", "not-deconstructable", "placeable-off-grid", "not-on-map"}
 		poleLight.selectable_in_game = false
