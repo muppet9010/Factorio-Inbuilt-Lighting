@@ -8,9 +8,20 @@ StartUp = function()
 	ModSettings.PowerPoleWireReachLightedMultiplier = tonumber(settings.startup["power-pole-wire-reach-lighted-percent"].value) / 100
 end
 
+PowerPoleToLightName = {}
+
+LoadConstants = function()
+	for power_pole_name, power_pole in pairs(game.entity_prototypes) do
+		if power_pole.type == "electric-pole" then
+			local supply_area_distance = math.ceil(power_pole.supply_area_distance)
+			PowerPoleToLightName[power_pole_name] = "light-" .. supply_area_distance
+		end
+	end
+end
+
+
 OnPowerPoleBuilt = function(entity)
-	local poleLightName = entity.name .. "-light"
-	if game.entity_prototypes[poleLightName] == nil then return end
+	local poleLightName = PowerPoleToLightName[entity.name]
 	local poleLight = entity.surface.find_entity(poleLightName, entity.position)
 	if poleLight ~= nil then return end
 	entity.surface.create_entity{
@@ -21,8 +32,7 @@ OnPowerPoleBuilt = function(entity)
 end
 
 OnPowerPoleRemoved = function(entity)
-	local poleLightName = entity.name .. "-light"
-	if game.entity_prototypes[poleLightName] == nil then return end
+	local poleLightName = PowerPoleToLightName[entity.name]
 	local poleLight = entity.surface.find_entity(poleLightName, entity.position)
 	if poleLight == nil then return end
 	poleLight.destroy()
