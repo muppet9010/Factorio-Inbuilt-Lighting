@@ -1,11 +1,11 @@
 {
     "name": "inbuilt_lighting",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "title": "Inbuilt Lighting",
     "author": "Muppet9010",
     "contact": "",
     "homepage": "",
     "factorio_version": "0.16",
     "dependencies": ["base >= 0.16"],
-    "description": "Adds configurable free lighting to power pole types. Intended for map/zoomed out view and streaming/youtube pre night vision"
+    "description": "Adds free lighting to all power poles types as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision"
 }

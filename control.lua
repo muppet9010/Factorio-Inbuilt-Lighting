@@ -1,81 +1,111 @@
-if ModSettings == nil then
-	ModSettings = {}
+OnStartup = function()
+	OnLoad()
+	if Global.ModSettings == nil then Global.ModSettings = {} end
+	if Global.EntityToLightName == nil then Global.EntityToLightName = {} end
+	UpdateSetting(nil)
 end
 
-
-
-StartUp = function()
-	ModSettings.PowerPoleWireReachLightedMultiplier = tonumber(settings.startup["power-pole-wire-reach-lighted-percent"].value) / 100
+OnLoad = function()
+	Global = global
 end
 
-OnPowerPoleBuilt = function(entity)
-	local poleLightName = entity.name .. "-light"
-	if game.entity_prototypes[poleLightName] == nil then return end
-	local poleLight = entity.surface.find_entity(poleLightName, entity.position)
-	if poleLight ~= nil then return end
+UpdateSetting = function(settingName)
+	if settingName == "power-pole-wire-reach-lighted-percent" or settingName == nil then
+		UpdatedElectricPoleSetting()
+	end
+end
+
+UpdatedElectricPoleSetting = function()
+	Global.ModSettings.PowerPoleWireReachLightedMultiplier = tonumber(settings.global["power-pole-wire-reach-lighted-percent"].value) / 100
+	for power_pole_name, power_pole in pairs(game.entity_prototypes) do
+		if power_pole.type == "electric-pole" then
+			local lightedDistance = math.min(math.ceil(power_pole.supply_area_distance * Global.ModSettings.PowerPoleWireReachLightedMultiplier), 75)
+			if lightedDistance > 0 then
+				Global.EntityToLightName[power_pole_name] = "hiddenlight-" .. lightedDistance
+			else
+				Global.EntityToLightName[power_pole_name] = nil
+			end
+		end
+	end
+	UpdateHiddenLightsForEntityType("electric-pole")
+end
+
+OnEntityBuilt = function(entity)
+	if entity == nil then
+		game.print("entity is nil")
+		return
+	elseif not entity.valid then
+		game.print("entity not valid")
+		return
+	end
+	local entityLightName = Global.EntityToLightName[entity.name]
+    if entityLightName == nil then return end
 	entity.surface.create_entity{
-		name = poleLightName, 
+		name = entityLightName, 
 		position = entity.position,
 		force = entity.force
 	}
 end
 
-OnPowerPoleRemoved = function(entity)
-	local poleLightName = entity.name .. "-light"
-	if game.entity_prototypes[poleLightName] == nil then return end
-	local poleLight = entity.surface.find_entity(poleLightName, entity.position)
-	if poleLight == nil then return end
-	poleLight.destroy()
+OnEntityRemoved = function(entity)
+	local entityLightName = Global.EntityToLightName[entity.name]
+    if entityLightName == nil then return end
+	local entityLight = entity.surface.find_entity(entityLightName, entity.position)
+	if entityLight == nil then return end
+	entityLight.destroy()
 end
 
-UpdateHiddenLightEntities = function()
-	if ModSettings.PowerPoleWireReachLightedMultiplier > 0 then
-		for _, surface in pairs(game.surfaces) do
-			for _, pole in pairs(surface.find_entities_filtered{type="electric-pole"}) do
-				OnPowerPoleBuilt(pole)
+UpdateHiddenLightsForEntityType = function(entityType)
+	for _, surface in pairs(game.surfaces) do
+		for _, mainEntity in pairs(surface.find_entities_filtered{type=entityType}) do
+			game.print("updating: " .. mainEntity.name .. " at: " .. mainEntity.position.x .. ", " .. mainEntity.position.y)
+			local expectedHiddenLightName = Global.EntityToLightName[mainEntity.name]
+			local correctLightFound = false
+			for _, lightEntity in pairs(surface.find_entities_filtered{
+				position = mainEntity.position,
+				type = "lamp"
+			}) do
+				if expectedHiddenLightName == nil or lightEntity.name ~= expectedHiddenLightName then
+					lightEntity.destroy()
+				else
+					correctLightFound = true
+				end
 			end
-		end
-	else
-		for _, surface in pairs(game.surfaces) do
-			for _, pole in pairs(surface.find_entities_filtered{type="electric-pole"}) do
-				OnPowerPoleRemoved(pole)
+			if not correctLightFound then
+				OnEntityBuilt(mainEntity)
 			end
 		end
 	end
 end
 
-
-
 OnBuiltEntity = function(event)
     local entity = event.created_entity
-    if entity.type == "electric-pole" and ModSettings.PowerPoleWireReachLightedMultiplier > 0 then
-        OnPowerPoleBuilt(entity)
-    end
+    OnEntityBuilt(entity)
 end
 
 OnRemovedEntity = function(event)
     local entity = event.entity
-    if entity.type == "electric-pole" and ModSettings.PowerPoleWireReachLightedMultiplier > 0 then
-		OnPowerPoleRemoved(entity)
-	end
+    OnEntityRemoved(entity)
 end
 
-OnFirstTick = function()
-	script.on_event(defines.events.on_tick, nil)
-	UpdateHiddenLightEntities()
+OnSettingChanged = function(event)
+	UpdateSetting(event.setting)
 end
 
 
 
-script.on_init(function() 
-	StartUp()
+script.on_init(function()
+	OnStartup()
 end)
 script.on_load(function() 
-	StartUp()
+	OnLoad()
 end)
 script.on_event(defines.events.on_built_entity, OnBuiltEntity)
 script.on_event(defines.events.on_robot_built_entity, OnBuiltEntity)
 script.on_event(defines.events.on_player_mined_entity, OnRemovedEntity)
 script.on_event(defines.events.on_entity_died, OnRemovedEntity)
 script.on_event(defines.events.on_robot_mined_entity, OnRemovedEntity)
-script.on_event(defines.events.on_tick, OnFirstTick)
+script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
+script.on_configuration_changed(function()
+	OnStartup()
+end)
