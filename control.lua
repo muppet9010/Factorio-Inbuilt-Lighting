@@ -47,7 +47,6 @@ end
 UpdateHiddenLightsForEntityType = function(entityType)
 	for _, surface in pairs(game.surfaces) do
 		for _, mainEntity in pairs(surface.find_entities_filtered{type=entityType}) do
-			game.print("updating: " .. mainEntity.name .. " at: " .. mainEntity.position.x .. ", " .. mainEntity.position.y)
 			local expectedHiddenLightName = Global.EntityToLightName[mainEntity.name]
 			local correctLightFound = false
 			for _, lightEntity in pairs(surface.find_entities_filtered{
