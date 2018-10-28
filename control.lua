@@ -1,14 +1,3 @@
-OnStartup = function()
-	OnLoad()
-	if Global.ModSettings == nil then Global.ModSettings = {} end
-	if Global.EntityToLightName == nil then Global.EntityToLightName = {} end
-	UpdateSetting(nil)
-end
-
-OnLoad = function()
-	Global = global
-end
-
 UpdateSetting = function(settingName)
 	if settingName == "power-pole-wire-reach-lighted-percent" or settingName == nil then
 		UpdatedElectricPoleSetting()
@@ -78,18 +67,42 @@ UpdateHiddenLightsForEntityType = function(entityType)
 	end
 end
 
+WasCreativeModeInstantDeconstructionUsed = function(event)
+	if event.instant_deconstruction ~= nil and event.instant_deconstruction == true then
+		return true 
+	else
+		return false
+	end
+end
+
+
+OnStartup = function()
+	OnLoad()
+	if Global.ModSettings == nil then Global.ModSettings = {} end
+	if Global.EntityToLightName == nil then Global.EntityToLightName = {} end
+	UpdateSetting(nil)
+end
+
+OnLoad = function()
+	Global = global
+end
+
 OnBuiltEntity = function(event)
-    local entity = event.created_entity
-    OnEntityBuilt(entity)
+    OnEntityBuilt(event.created_entity)
 end
 
 OnRemovedEntity = function(event)
-    local entity = event.entity
-    OnEntityRemoved(entity)
+    OnEntityRemoved(event.entity)
 end
 
 OnSettingChanged = function(event)
 	UpdateSetting(event.setting)
+end
+
+OnRobotPreMined = function(event)
+	if WasCreativeModeInstantDeconstructionUsed(event) then
+		OnEntityRemoved(event.entity)
+	end 
 end
 
 
@@ -105,6 +118,7 @@ script.on_event(defines.events.on_robot_built_entity, OnBuiltEntity)
 script.on_event(defines.events.on_player_mined_entity, OnRemovedEntity)
 script.on_event(defines.events.on_entity_died, OnRemovedEntity)
 script.on_event(defines.events.on_robot_mined_entity, OnRemovedEntity)
+script.on_event(defines.events.on_robot_pre_mined, OnRobotPreMined)
 script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
 script.on_configuration_changed(function()
 	OnStartup()
