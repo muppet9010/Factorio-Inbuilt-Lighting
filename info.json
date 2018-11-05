@@ -7,5 +7,5 @@
     "homepage": "",
     "factorio_version": "0.16",
     "dependencies": ["base >= 0.16"],
-    "description": "Adds free lighting to all power poles types as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision"
+    "description": "Adds free lighting to power poles and optionally turrets as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision"
 }
