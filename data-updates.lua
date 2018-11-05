@@ -35,6 +35,7 @@ GenerateHiddenLight = function(tile, name)
 	hiddenLight.energy_source.render_no_power_icon = false
 	return hiddenLight
 end
+
 --Used to connect the hidden lights when there is no electric network there and no power usage set (work around engine feature)
 GenerateHiddenLightEletricPole = function()
 	local hiddenLightPole = table.deepcopy(data.raw["electric-pole"]["small-electric-pole"])
