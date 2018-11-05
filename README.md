@@ -1,5 +1,4 @@
 # Factorio-Inbuilt-Lighting
-Adds free lighting to power poles and optionally turrets as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision
 
 
 

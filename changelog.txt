@@ -1,0 +1,11 @@
+0.1.1
+	Added: Supports Creative Mode mod's instant deconstruction and blueprinting options.
+	Added: Optional power usage per light in Watts. Defaults to 0. Has to be startup setting.
+	Added: Option to have turrets lit. UPS advisory in readme and settings description.
+	Changed: Power Pole lighted area setting changed to be Map setting from Startup setting. So it can be changed mid game now. Note: old setting value is lost on upgrade.
+	Changed: Lights for all sizes are created at start and dynamically matched to buildings at map start to avoid potential compatibility issues with other mods that add/change power poles late in game engine start up.
+	Fixed: Multiplayer Compatible.
+---------------------------------------------------------------------------------------------------
+0.1.0
+	Initial Release
+	Supports Power Poles with variable percentage of powered area lit up. Free power and free lights.

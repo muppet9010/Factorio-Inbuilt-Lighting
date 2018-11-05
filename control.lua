@@ -92,8 +92,9 @@ UpdateHiddenLightsForEntityType = function(entityTypesTable)
 			if mainEntity.force.ai_controllable == false and mainEntity.name ~= "hiddenlightpole" then
 				local expectedHiddenLightName = Global.EntityToLightName[mainEntity.name]
 				local correctLightFound = false
+				--Use an area search to work around Factorio position search bug: https://forums.factorio.com/viewtopic.php?f=7&t=63270
 				for lightEntityIndex, lightEntity in pairs(surface.find_entities_filtered{
-					position = mainEntity.position,
+					area = {{mainEntity.position.x-0.0001, mainEntity.position.y-0.0001}, {mainEntity.position.x+0.0001, mainEntity.position.y+0.0001}},
 					type = "lamp"
 				}) do
 					if expectedHiddenLightName == nil or lightEntity.name ~= expectedHiddenLightName then
@@ -177,7 +178,9 @@ script.on_event(defines.events.on_entity_died, OnRemovedEntity)
 script.on_event(defines.events.on_robot_mined_entity, OnRemovedEntity)
 script.on_event(defines.events.on_robot_pre_mined, OnRobotPreMined)
 script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
-
+script.on_configuration_changed(function()
+	OnStartup()
+end)
 
 
 
