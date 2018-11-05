@@ -177,7 +177,9 @@ script.on_event(defines.events.on_entity_died, OnRemovedEntity)
 script.on_event(defines.events.on_robot_mined_entity, OnRemovedEntity)
 script.on_event(defines.events.on_robot_pre_mined, OnRobotPreMined)
 script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
-
+script.on_configuration_changed(function()
+	OnStartup()
+end)
 
 
 
