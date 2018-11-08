@@ -134,14 +134,22 @@ end
 
 
 
-OnStartup = function()
-	OnLoad()
+CreateGlobals = function()
 	if Global.EntityToLightName == nil then Global.EntityToLightName = {} end
+end
+
+ReferenceGlobals = function()
+	Global = global
+end
+
+OnStartup = function()
+	CreateGlobals()
+	ReferenceGlobals()
 	UpdateSetting(nil)
 end
 
 OnLoad = function()
-	Global = global
+	ReferenceGlobals()
 end
 
 OnBuiltEntity = function(event)
