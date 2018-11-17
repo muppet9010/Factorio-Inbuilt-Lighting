@@ -71,15 +71,17 @@ OnEntityBuilt = function(entity)
 	}
 end
 
-OnEntityRemoved = function(entity)
+OnEntityRemoved = function(entity, positionToCheckOverride)
 	if entity.force.ai_controllable == true then return end
 	local hiddenLightName = Global.EntityToLightName[entity.name]
     if hiddenLightName == nil then return end
-	local hiddenLightEntity = entity.surface.find_entity(hiddenLightName, entity.position)
+	local position = entity.position
+	if positionToCheckOverride ~= nil then position = positionToCheckOverride end
+	local hiddenLightEntity = entity.surface.find_entity(hiddenLightName, position)
 	if hiddenLightEntity ~= nil then
 		local result = hiddenLightEntity.destroy()
 	end
-	local entityLightPole = entity.surface.find_entity("hiddenlightpole", entity.position)
+	local entityLightPole = entity.surface.find_entity("hiddenlightpole", position)
 	if entityLightPole ~= nil then
 		local result = entityLightPole.destroy()
 	end
@@ -131,6 +133,17 @@ MakeArrayFromTableKeys = function(thisTable)
 	return newArray
 end
 
+RegisterEvents = function()
+	if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
+		script.on_event(remote.call("picker", "dolly_moved_entity_id"), PickerDollyEntityMoved)
+	end
+end
+
+PickerDollyEntityMoved = function(event)
+	OnEntityRemoved(event.moved_entity , event.start_pos)
+	OnEntityBuilt(event.moved_entity )
+end
+
 
 
 
@@ -146,10 +159,12 @@ OnStartup = function()
 	CreateGlobals()
 	ReferenceGlobals()
 	UpdateSetting(nil)
+	RegisterEvents()
 end
 
 OnLoad = function()
 	ReferenceGlobals()
+	RegisterEvents()
 end
 
 OnBuiltEntity = function(event)
