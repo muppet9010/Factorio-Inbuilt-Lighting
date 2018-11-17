@@ -15,13 +15,13 @@ UpdatedElectricPoleSetting = function()
 			if powerPoleWireReachLightedMultiplier > 0 then
 				local lightedDistance = math.ceil(power_pole.supply_area_distance * powerPoleWireReachLightedMultiplier)
 				lightedDistance = math.min(lightedDistance, 75)
-				Global.EntityToLightName[power_pole_name] = "hiddenlight-" .. lightedDistance
+				EntityToLightName[power_pole_name] = "hiddenlight-" .. lightedDistance
 			else
-				Global.EntityToLightName[power_pole_name] = nil
+				EntityToLightName[power_pole_name] = nil
 			end
 		end
 	end
-	Global.EntityToLightName["hiddenlightpole"] = nil
+	EntityToLightName["hiddenlightpole"] = nil
 	UpdateHiddenLightsForEntityType(entityTypesTable)
 end
 
@@ -38,9 +38,9 @@ UpdatedTurretSetting = function()
 					lightedDistance = math.ceil(FindEntitiePrototypeRadius(turret))
 				end
 				lightedDistance = math.min(lightedDistance, 75)
-				Global.EntityToLightName[turret_name] = "hiddenlight-" .. lightedDistance
+				EntityToLightName[turret_name] = "hiddenlight-" .. lightedDistance
 			else
-				Global.EntityToLightName[turret_name] = nil
+				EntityToLightName[turret_name] = nil
 			end
 		end
 	end
@@ -55,7 +55,7 @@ end
 
 OnEntityBuilt = function(entity)
 	if entity.force.ai_controllable == true then return end
-	local entityLightName = Global.EntityToLightName[entity.name]
+	local entityLightName = EntityToLightName[entity.name]
     if entityLightName == nil then return end
 	if entity.type ~= "electric-pole" then
 		local hiddenPoleAdded = entity.surface.create_entity{
@@ -73,7 +73,7 @@ end
 
 OnEntityRemoved = function(entity, positionToCheckOverride)
 	if entity.force.ai_controllable == true then return end
-	local hiddenLightName = Global.EntityToLightName[entity.name]
+	local hiddenLightName = EntityToLightName[entity.name]
     if hiddenLightName == nil then return end
 	local position = entity.position
 	if positionToCheckOverride ~= nil then position = positionToCheckOverride end
@@ -92,7 +92,7 @@ UpdateHiddenLightsForEntityType = function(entityTypesTable)
 	for surfaceIndex, surface in pairs(game.surfaces) do
 		for mainEntityIndex, mainEntity in pairs(surface.find_entities_filtered{type=entityTypesArray}) do
 			if mainEntity.force.ai_controllable == false and mainEntity.name ~= "hiddenlightpole" then
-				local expectedHiddenLightName = Global.EntityToLightName[mainEntity.name]
+				local expectedHiddenLightName = EntityToLightName[mainEntity.name]
 				local correctLightFound = false
 				--Use an area search to work around Factorio position search bug: https://forums.factorio.com/viewtopic.php?f=7&t=63270
 				for lightEntityIndex, lightEntity in pairs(surface.find_entities_filtered{
@@ -157,11 +157,11 @@ end
 
 
 CreateGlobals = function()
-	if Global.EntityToLightName == nil then Global.EntityToLightName = {} end
+	if global.EntityToLightName == nil then global.EntityToLightName = {} end
 end
 
 ReferenceGlobals = function()
-	Global = global
+	EntityToLightName = global.EntityToLightName
 end
 
 OnStartup = function()
