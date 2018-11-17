@@ -133,11 +133,6 @@ MakeArrayFromTableKeys = function(thisTable)
 	return newArray
 end
 
-RegisterEvents = function()
-	if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
-		script.on_event(remote.call("picker", "dolly_moved_entity_id"), PickerDollyEntityMoved)
-	end
-end
 
 PickerDollyEntityMoved = function(event)
 	OnEntityRemoved(event.moved_entity , event.start_pos)
@@ -183,6 +178,13 @@ OnRobotPreMined = function(event)
 	if WasCreativeModeInstantDeconstructionUsed(event) then
 		OnEntityRemoved(event.entity)
 	end 
+end
+
+RegisterEvents = function()
+	--Picker Extended Mod - Dolly entity movement feature event
+	if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
+		script.on_event(remote.call("picker", "dolly_moved_entity_id"), PickerDollyEntityMoved)
+	end
 end
 
 
