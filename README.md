@@ -16,7 +16,12 @@ Lights in Factorio illuminate the in-game picture you see and so tall building p
 If the lights have a power usage set then the Electric Network Info screen will have 1 listing for each radius of light present (1 entry per power pole type). This is unavoidable in the Factorio engine.
 
 The mod doesn't change or replace buildings or power poles in any way and so if the mod is removed the game will just remove the inbuilt lights and not affect existing power poles.
-The mod should be compatible with all other mods as it reacts when entities are placed in the game. No changes to any base or other mod entities occur. Hidden lamps are created for all sizes between 1 and 75 tiles at game start.
+The mod should be compatible with all other standard placement mods as it reacts when entities are placed in the game. No changes to any base or other mod entities occur. Hidden lamps are created for all sizes between 1 and 75 tiles at game start.
+Support for mods that place & move entities in the map:
+	* Creative Mode mod - Instant Construction & Deconstruction
+	* Picker Extended - Dollies feature
+	
+Should mod compatibility issues occur the command "inbuilt-lighting-reset" is included to tidy up any issues prior to support being added. It removes and then re-adds all inbuilt lighting entities on the map.
 
 
 Note: power usage graph of low powered lights (watts) may appear slighly off. Logged as bug with developers: https://forums.factorio.com/viewtopic.php?f=7&t=63153

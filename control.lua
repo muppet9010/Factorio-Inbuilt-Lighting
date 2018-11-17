@@ -133,10 +133,24 @@ MakeArrayFromTableKeys = function(thisTable)
 	return newArray
 end
 
-
 PickerDollyEntityMoved = function(event)
 	OnEntityRemoved(event.moved_entity , event.start_pos)
 	OnEntityBuilt(event.moved_entity )
+end
+
+InbuiltLighting_Reset = function(command_details)
+	RemoveAllModEntities()
+	UpdateSetting(nil)
+end
+
+RemoveAllModEntities = function()
+	for surfaceIndex, surface in pairs(game.surfaces) do
+		for entityIndex, entity in pairs(surface.find_entities()) do
+			if entity.name == "hiddenlightpole" or string.find(entity.name, "hiddenlight-") == 1 then
+				entity.destroy()
+			end
+		end
+	end
 end
 
 
@@ -155,11 +169,13 @@ OnStartup = function()
 	ReferenceGlobals()
 	UpdateSetting(nil)
 	RegisterEvents()
+	RegisterCommands()
 end
 
 OnLoad = function()
 	ReferenceGlobals()
 	RegisterEvents()
+	RegisterCommands()
 end
 
 OnBuiltEntity = function(event)
@@ -187,7 +203,12 @@ RegisterEvents = function()
 	end
 end
 
-test
+RegisterCommands = function()
+	commands.remove_command("inbuilt-lighting-reset")
+	commands.add_command("inbuilt-lighting-reset", {"api-description.inbuilt-lighting-reset"}, InbuiltLighting_Reset)
+end
+
+
 
 
 script.on_init(function()
