@@ -15,13 +15,13 @@ UpdatedElectricPoleSetting = function()
 			if powerPoleWireReachLightedMultiplier > 0 then
 				local lightedDistance = math.ceil(power_pole.supply_area_distance * powerPoleWireReachLightedMultiplier)
 				lightedDistance = math.min(lightedDistance, 75)
-				Global.EntityToLightName[power_pole_name] = "hiddenlight-" .. lightedDistance
+				EntityToLightName[power_pole_name] = "hiddenlight-" .. lightedDistance
 			else
-				Global.EntityToLightName[power_pole_name] = nil
+				EntityToLightName[power_pole_name] = nil
 			end
 		end
 	end
-	Global.EntityToLightName["hiddenlightpole"] = nil
+	EntityToLightName["hiddenlightpole"] = nil
 	UpdateHiddenLightsForEntityType(entityTypesTable)
 end
 
@@ -38,9 +38,9 @@ UpdatedTurretSetting = function()
 					lightedDistance = math.ceil(FindEntitiePrototypeRadius(turret))
 				end
 				lightedDistance = math.min(lightedDistance, 75)
-				Global.EntityToLightName[turret_name] = "hiddenlight-" .. lightedDistance
+				EntityToLightName[turret_name] = "hiddenlight-" .. lightedDistance
 			else
-				Global.EntityToLightName[turret_name] = nil
+				EntityToLightName[turret_name] = nil
 			end
 		end
 	end
@@ -55,7 +55,7 @@ end
 
 OnEntityBuilt = function(entity)
 	if entity.force.ai_controllable == true then return end
-	local entityLightName = Global.EntityToLightName[entity.name]
+	local entityLightName = EntityToLightName[entity.name]
     if entityLightName == nil then return end
 	if entity.type ~= "electric-pole" then
 		local hiddenPoleAdded = entity.surface.create_entity{
@@ -71,15 +71,17 @@ OnEntityBuilt = function(entity)
 	}
 end
 
-OnEntityRemoved = function(entity)
+OnEntityRemoved = function(entity, positionToCheckOverride)
 	if entity.force.ai_controllable == true then return end
-	local hiddenLightName = Global.EntityToLightName[entity.name]
+	local hiddenLightName = EntityToLightName[entity.name]
     if hiddenLightName == nil then return end
-	local hiddenLightEntity = entity.surface.find_entity(hiddenLightName, entity.position)
+	local position = entity.position
+	if positionToCheckOverride ~= nil then position = positionToCheckOverride end
+	local hiddenLightEntity = entity.surface.find_entity(hiddenLightName, position)
 	if hiddenLightEntity ~= nil then
 		local result = hiddenLightEntity.destroy()
 	end
-	local entityLightPole = entity.surface.find_entity("hiddenlightpole", entity.position)
+	local entityLightPole = entity.surface.find_entity("hiddenlightpole", position)
 	if entityLightPole ~= nil then
 		local result = entityLightPole.destroy()
 	end
@@ -90,7 +92,7 @@ UpdateHiddenLightsForEntityType = function(entityTypesTable)
 	for surfaceIndex, surface in pairs(game.surfaces) do
 		for mainEntityIndex, mainEntity in pairs(surface.find_entities_filtered{type=entityTypesArray}) do
 			if mainEntity.force.ai_controllable == false and mainEntity.name ~= "hiddenlightpole" then
-				local expectedHiddenLightName = Global.EntityToLightName[mainEntity.name]
+				local expectedHiddenLightName = EntityToLightName[mainEntity.name]
 				local correctLightFound = false
 				--Use an area search to work around Factorio position search bug: https://forums.factorio.com/viewtopic.php?f=7&t=63270
 				for lightEntityIndex, lightEntity in pairs(surface.find_entities_filtered{
@@ -131,17 +133,49 @@ MakeArrayFromTableKeys = function(thisTable)
 	return newArray
 end
 
+PickerDollyEntityMoved = function(event)
+	OnEntityRemoved(event.moved_entity , event.start_pos)
+	OnEntityBuilt(event.moved_entity )
+end
 
-
-
-OnStartup = function()
-	OnLoad()
-	if Global.EntityToLightName == nil then Global.EntityToLightName = {} end
+InbuiltLighting_Reset = function(command_details)
+	RemoveAllModEntities()
 	UpdateSetting(nil)
 end
 
+RemoveAllModEntities = function()
+	for surfaceIndex, surface in pairs(game.surfaces) do
+		for entityIndex, entity in pairs(surface.find_entities()) do
+			if entity.name == "hiddenlightpole" or string.find(entity.name, "hiddenlight-") == 1 then
+				entity.destroy()
+			end
+		end
+	end
+end
+
+
+
+
+CreateGlobals = function()
+	if global.EntityToLightName == nil then global.EntityToLightName = {} end
+end
+
+ReferenceGlobals = function()
+	EntityToLightName = global.EntityToLightName
+end
+
+OnStartup = function()
+	CreateGlobals()
+	ReferenceGlobals()
+	UpdateSetting(nil)
+	RegisterEvents()
+	RegisterCommands()
+end
+
 OnLoad = function()
-	Global = global
+	ReferenceGlobals()
+	RegisterEvents()
+	RegisterCommands()
 end
 
 OnBuiltEntity = function(event)
@@ -160,6 +194,18 @@ OnRobotPreMined = function(event)
 	if WasCreativeModeInstantDeconstructionUsed(event) then
 		OnEntityRemoved(event.entity)
 	end 
+end
+
+RegisterEvents = function()
+	--Picker Extended Mod - Dolly entity movement feature event
+	if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
+		script.on_event(remote.call("picker", "dolly_moved_entity_id"), PickerDollyEntityMoved)
+	end
+end
+
+RegisterCommands = function()
+	commands.remove_command("inbuilt-lighting-reset")
+	commands.add_command("inbuilt-lighting-reset", {"api-description.inbuilt-lighting-reset"}, InbuiltLighting_Reset)
 end
 
 

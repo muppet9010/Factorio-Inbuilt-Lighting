@@ -1,3 +1,7 @@
+0.1.2
+	Added: Support for Picker Extended's Dolly feature.
+	Added: Command to reset all of this mods entities on the map. Used for recovery after unsupported other mod actions. Command name: InbuiltLighting_Reset	
+------------------------------------------------------------------------------------------------------
 0.1.1
 	Added: Supports Creative Mode mod's instant deconstruction and blueprinting options.
 	Added: Optional power usage per light in Watts. Defaults to 0. Has to be startup setting.
