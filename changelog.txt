@@ -1,7 +1,13 @@
+0.1.3
+	Fixed: power poles are blueprintable, no longer blocked by hidden lights
+	Fixed: power poles are fast replaceable, no longer blocked by hidden lights
+---------------------------------------------------
+
 0.1.2
 	Added: Support for Picker Extended's Dolly feature.
-	Added: Command to reset all of this mods entities on the map. Used for recovery after unsupported other mod actions. Command name: inbuilt-lighting-reset	
+	Added: Command to reset all of this mods entities on the map. Used for recovery after unsupported other mod actions. Command name: inbuilt-lighting-reset
 ------------------------------------------------------------------------------------------------------
+
 0.1.1
 	Added: Supports Creative Mode mod's instant deconstruction and blueprinting options.
 	Added: Optional power usage per light in Watts. Defaults to 0. Has to be startup setting.
@@ -10,6 +16,7 @@
 	Changed: Lights for all sizes are created at start and dynamically matched to buildings at map start to avoid potential compatibility issues with other mods that add/change power poles late in game engine start up.
 	Fixed: Multiplayer Compatible.
 ---------------------------------------------------------------------------------------------------
+
 0.1.0
 	Initial Release
 	Supports Power Poles with variable percentage of powered area lit up. Free power and free lights.
