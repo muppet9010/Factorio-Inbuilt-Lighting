@@ -32,7 +32,7 @@ Support for mods that place & move entities in the map:
 	* Creative Mode mod - Instant Construction & Deconstruction
 	* Picker Extended - Dollies feature
 	
-Should mod compatibility issues occur the command "inbuilt-lighting-reset" is included to tidy up any issues prior to support being added. It removes and then re-adds all inbuilt lighting entities on the map.
+Should mod compatibility issues occur the command "inbuilt-lighting-reset" is included to tidy up any legacy issues that had occurred prior to support being added. It removes and then re-adds all inbuilt lighting entities on the map.
 
 
 Factorio Bugs and Oddities
