@@ -1,6 +1,6 @@
 17.0.0
-	Requires and compatible with 0.17 Factorio
-	No function changes from the 0.17 version
+	Requires and made code compatible with 0.17 Factorio
+	No function changes from the 0.16 Factorio (0.1.3) version
 ---------------------------------------------------
 
 0.1.3 - Last 0.16 compatible version
