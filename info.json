@@ -1,11 +1,11 @@
 {
     "name": "inbuilt_lighting",
-    "version": "0.1.3",
+    "version": "17.0.0",
     "title": "Inbuilt Lighting",
     "author": "Muppet9010",
     "contact": "",
     "homepage": "",
-    "factorio_version": "0.16",
-    "dependencies": ["base >= 0.16"],
+    "factorio_version": "0.17",
+    "dependencies": ["base >= 0.17"],
     "description": "Adds free lighting to power poles and optionally turrets as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision"
 }
