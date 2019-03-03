@@ -10,7 +10,7 @@ Options
 
 The mod scales the light for each power pole based on its powering range. There is a global setting to increase/decrease this as a percentage from 0 to massive based on your desires. 0 turns off the inbuilt light entirely and removes them from the map (save any UPS).
 
-The mod can light up turrets. If the feature is enabled it will light up the building plus the set number of tiles around the edge from 0 upwards. Note, large quantities of turrets (500+) with this feature enabled can impact UPS and cause game slowdown. Turn this feature off later in the game when turrets have power and power pole lighting is suitable. 
+The mod can light up turrets. If the feature is enabled it will light up the building plus the set number of tiles around the edge from 0 upwards. Note, large quantities of turrets (500+) with this feature enabled can impact UPS and cause game slowdown. Turn this feature off later in the game when turrets have power and power pole lighting is suitable.
 
 There is a setting to control how much power each inbuilt light requires. It defaults to 0 watts, which means these lights are on without any power network being required. Anything above 0 watts requires active electricity for them to work and thus an active power network. There will never be any low power or no electric connection icons shown for the inbuilt lights regardless of the power usage setting.
 
@@ -31,13 +31,13 @@ The mod should be compatible with all other mods that don't move entities around
 Support for mods that place & move entities in the map:
 	* Creative Mode mod - Instant Construction & Deconstruction
 	* Picker Extended - Dollies feature
-	
+
 Should mod compatibility issues occur the command "inbuilt-lighting-reset" is included to tidy up any legacy issues that had occurred prior to support being added. It removes and then re-adds all inbuilt lighting entities on the map.
 
 
-Factorio Bugs and Oddities
+Factorio Bugs and Oddities with 0.16 Factorio Only
 ----------------------
 
 Note: power usage graph of low powered lights (watts) may appear slighly off. Logged as bug with developers: https://forums.factorio.com/viewtopic.php?f=7&t=63153
 The mod should be fully multiplayer compatible and multi force compatible, however this hasn't been tested.
-The issue around turrets and UPS impact is caused by the Factorio game engine needing a light to be connected to an eletric network. As we don't want free power poles everywhere turrets have mini ones created for them. With each turret having its own electric network this can add up and cause higher CPU usage in the game. 
+The issue around turrets and UPS impact is caused by the Factorio game engine needing a light to be connected to an eletric network. As we don't want free power poles everywhere turrets have mini ones created for them. With each turret having its own electric network this can add up and cause higher CPU usage in the game.
