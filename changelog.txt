@@ -6,6 +6,7 @@ Date: 2019-03-23
     - Returned mod versioning to correct order
     - Refactored code to be complaint with luacheck
     - Changed code to utilise my utily library
+    - Removed work around for 0.16 surface filtered search API bug
 
 ---------------------------------------------------------------------------------------------------
 Version: 17.0.0
