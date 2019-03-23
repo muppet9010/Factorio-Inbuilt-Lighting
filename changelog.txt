@@ -7,6 +7,7 @@ Date: 2019-03-23
     - Refactored code to be complaint with luacheck
     - Changed code to utilise my utily library
     - Removed work around for 0.16 surface filtered search API bug
+    - Added support for script_raised events for better inter-mod compatibility
 
 ---------------------------------------------------------------------------------------------------
 Version: 17.0.0
