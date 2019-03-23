@@ -49,7 +49,15 @@ local function OnLoad()
 end
 
 local function OnBuiltEntity(event)
-    HiddenLight.OnEntityBuilt(event.created_entity)
+    local entity
+    if event.created_entity ~= nil then
+        entity = event.created_entity
+    elseif event.entity ~= nil then
+        entity = event.entity
+    else
+        return
+    end
+    HiddenLight.OnEntityBuilt(entity)
 end
 
 local function OnRemovedEntity(event)
@@ -68,11 +76,15 @@ end
 
 script.on_init(OnStartup)
 script.on_load(OnLoad)
+script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
+script.on_configuration_changed(OnStartup)
+
 script.on_event(defines.events.on_built_entity, OnBuiltEntity)
 script.on_event(defines.events.on_robot_built_entity, OnBuiltEntity)
 script.on_event(defines.events.on_player_mined_entity, OnRemovedEntity)
 script.on_event(defines.events.on_entity_died, OnRemovedEntity)
 script.on_event(defines.events.on_robot_mined_entity, OnRemovedEntity)
 script.on_event(defines.events.on_robot_pre_mined, OnRobotPreMined)
-script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
-script.on_configuration_changed(OnStartup)
+script.on_event(defines.events.script_raised_built, OnBuiltEntity)
+script.on_event(defines.events.script_raised_revive, OnBuiltEntity)
+script.on_event(defines.events.script_raised_destroy, OnRemovedEntity)
