@@ -5,15 +5,7 @@
 local Constants = require("constants")
 
 
-GenerateHiddenLights = function()
-	local poleLights = {}
-	for tile=1,75 do
-		table.insert(poleLights, GenerateHiddenLight(tile, tile))
-	end
-	data:extend(poleLights)
-end
-
-GenerateHiddenLight = function(tile, name)
+local function GenerateHiddenLight(tile, name)
 	if name == nil then name = tile end
 	local lightRange = tile * 5
 	local hiddenLight = table.deepcopy(data.raw["lamp"]["small-lamp"])
@@ -46,8 +38,18 @@ GenerateHiddenLight = function(tile, name)
 	return hiddenLight
 end
 
+
+local function GenerateHiddenLights()
+	local poleLights = {}
+	for tile=1,75 do
+		table.insert(poleLights, GenerateHiddenLight(tile, tile))
+	end
+	data:extend(poleLights)
+end
+
+
 --Used to connect the hidden lights when there is no electric network there and no power usage set (work around engine feature)
-GenerateHiddenLightEletricPole = function()
+local function GenerateHiddenLightEletricPole()
 	local hiddenLightPole = table.deepcopy(data.raw["electric-pole"]["small-electric-pole"])
 	hiddenLightPole.name = "hiddenlightpole"
 	hiddenLightPole.collision_mask = {}
