@@ -1,79 +1,70 @@
 local HiddenLight = require("scripts/hiddenlight")
 local Utils = require("utility/utils")
 
-
 local function UpdateSetting(settingName)
-	if settingName == "power-pole-wire-reach-lighted-percent" or settingName == nil then
-		HiddenLight.UpdatedElectricPoleSetting()
-	end
-	if settingName == "turrets-lighted-edge-tiles" or settingName == nil then
-		HiddenLight.UpdatedTurretSetting()
-	end
+    if settingName == "power-pole-wire-reach-lighted-percent" or settingName == nil then
+        HiddenLight.UpdatedElectricPoleSetting()
+    end
+    if settingName == "turrets-lighted-edge-tiles" or settingName == nil then
+        HiddenLight.UpdatedTurretSetting()
+    end
 end
-
 
 local function InbuiltLighting_Reset()
-	HiddenLight.RemoveAllModEntities()
-	UpdateSetting(nil)
+    HiddenLight.RemoveAllModEntities()
+    UpdateSetting(nil)
 end
-
 
 local function RegisterEvents()
-	--Picker Extended Mod - Dolly entity movement feature event
-	if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
-		script.on_event(remote.call("picker", "dolly_moved_entity_id"), HiddenLight.PickerDollyEntityMoved)
-	end
+    --Picker Extended Mod - Dolly entity movement feature event
+    if remote.interfaces["picker"] and remote.interfaces["picker"]["dolly_moved_entity_id"] then
+        script.on_event(remote.call("picker", "dolly_moved_entity_id"), HiddenLight.PickerDollyEntityMoved)
+    end
 end
-
 
 local function RegisterCommands()
-	commands.remove_command("inbuilt-lighting-reset")
-	commands.add_command("inbuilt-lighting-reset", {"api-description.inbuilt-lighting-reset"}, InbuiltLighting_Reset)
+    commands.remove_command("inbuilt-lighting-reset")
+    commands.add_command("inbuilt-lighting-reset", {"api-description.inbuilt-lighting-reset"}, InbuiltLighting_Reset)
 end
-
-
 
 local function CreateGlobals()
-	if global.Mod == nil then global.Mod = {} end
-	if global.Mod.EntityToLightName == nil then global.Mod.EntityToLightName = {} end
+    if global.Mod == nil then
+        global.Mod = {}
+    end
+    if global.Mod.EntityToLightName == nil then
+        global.Mod.EntityToLightName = {}
+    end
 end
-
 
 local function OnStartup()
-	CreateGlobals()
-	UpdateSetting(nil)
-	RegisterEvents()
-	RegisterCommands()
+    CreateGlobals()
+    UpdateSetting(nil)
+    RegisterEvents()
+    RegisterCommands()
 end
-
 
 local function OnLoad()
-	RegisterEvents()
-	RegisterCommands()
+    RegisterEvents()
+    RegisterCommands()
 end
-
 
 local function OnBuiltEntity(event)
     HiddenLight.OnEntityBuilt(event.created_entity)
 end
 
-
 local function OnRemovedEntity(event)
     HiddenLight.OnEntityRemoved(event.entity)
 end
 
-
 local function OnSettingChanged(event)
-	UpdateSetting(event.setting)
+    UpdateSetting(event.setting)
 end
-
 
 local function OnRobotPreMined(event)
-	if Utils.WasCreativeModeInstantDeconstructionUsed(event) then
-		HiddenLight.OnEntityRemoved(event.entity)
-	end
+    if Utils.WasCreativeModeInstantDeconstructionUsed(event) then
+        HiddenLight.OnEntityRemoved(event.entity)
+    end
 end
-
 
 script.on_init(OnStartup)
 script.on_load(OnLoad)
