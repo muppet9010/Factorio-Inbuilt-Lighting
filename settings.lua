@@ -9,6 +9,18 @@ data:extend(
             order = "1001"
         },
         {
+            name = "research-unlock",
+            type = "bool-setting",
+            default_value = false,
+            setting_type = "startup",
+            order = "1001"
+        }
+    }
+)
+
+data:extend(
+    {
+        {
             name = "power-pole-wire-reach-lighted-percent",
             type = "int-setting",
             default_value = 100,

@@ -1,4 +1,4 @@
-local HiddenLight = require("scripts/hiddenlight")
+local HiddenLight = require("scripts/hidden-light")
 local Utils = require("utility/utils")
 
 local function UpdateSetting(settingName)
@@ -8,6 +8,10 @@ local function UpdateSetting(settingName)
     if settingName == "turrets-lighted-edge-tiles" or settingName == nil then
         HiddenLight.UpdatedTurretSetting()
     end
+end
+
+local function GetStartUpSettings()
+    HiddenLight.HandleResearchEnabledSetting()
 end
 
 local function InbuiltLighting_Reset()
@@ -34,10 +38,14 @@ local function CreateGlobals()
     if global.Mod.EntityToLightName == nil then
         global.Mod.EntityToLightName = {}
     end
+    if global.Mod.EnabledForForce == nil then
+        global.Mod.EnabledForForce = {}
+    end
 end
 
 local function OnStartup()
     CreateGlobals()
+    GetStartUpSettings()
     UpdateSetting(nil)
     RegisterEvents()
     RegisterCommands()
@@ -74,10 +82,15 @@ local function OnRobotPreMined(event)
     end
 end
 
+local function OnResearchFinished(event)
+    HiddenLight.OnResearchFinished(event.research)
+    UpdateSetting(nil)
+end
+
 script.on_init(OnStartup)
 script.on_load(OnLoad)
-script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
 script.on_configuration_changed(OnStartup)
+script.on_event(defines.events.on_runtime_mod_setting_changed, OnSettingChanged)
 
 script.on_event(defines.events.on_built_entity, OnBuiltEntity)
 script.on_event(defines.events.on_robot_built_entity, OnBuiltEntity)
@@ -88,3 +101,4 @@ script.on_event(defines.events.on_robot_pre_mined, OnRobotPreMined)
 script.on_event(defines.events.script_raised_built, OnBuiltEntity)
 script.on_event(defines.events.script_raised_revive, OnBuiltEntity)
 script.on_event(defines.events.script_raised_destroy, OnRemovedEntity)
+script.on_event(defines.events.on_research_finished, OnResearchFinished)

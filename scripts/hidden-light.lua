@@ -15,6 +15,9 @@ function HiddenLight.OnEntityBuilt(entity)
     if entityLightName == nil then
         return
     end
+    if entity.force == nil or not global.Mod.EnabledForForce[entity.force.name] then
+        return
+    end
     if entity.type ~= "electric-pole" then
         entity.surface.create_entity {
             name = "hiddenlightpole",
@@ -35,6 +38,9 @@ function HiddenLight.OnEntityRemoved(entity, positionToCheckOverride)
     end
     local hiddenLightName = global.Mod.EntityToLightName[entity.name]
     if hiddenLightName == nil then
+        return
+    end
+    if entity.force == nil or not global.Mod.EnabledForForce[entity.force.name] then
         return
     end
     local position = entity.position
@@ -64,7 +70,7 @@ function HiddenLight.UpdateHiddenLightsForEntityType(entityTypesTable)
                         type = "lamp"
                     }
                 ) do
-                    if expectedHiddenLightName == nil or lightEntity.name ~= expectedHiddenLightName then
+                    if expectedHiddenLightName == nil or lightEntity.name ~= expectedHiddenLightName or not global.Mod.EnabledForForce[lightEntity.force.name] then
                         lightEntity.destroy()
                     else
                         correctLightFound = true
@@ -133,6 +139,29 @@ function HiddenLight.RemoveAllModEntities()
             if entity.name == "hiddenlightpole" or string.find(entity.name, "hiddenlight-") == 1 then
                 entity.destroy()
             end
+        end
+    end
+end
+
+function HiddenLight.OnResearchFinished(technology)
+    if technology.name ~= "inbuilt-lighting" then
+        return
+    end
+    global.Mod.EnabledForForce[technology.force.name] = true
+end
+
+function HiddenLight.HandleResearchEnabledSetting()
+    if settings.startup["research-unlock"].value then
+        for _, force in pairs(game.forces) do
+            if force.technologies["inbuilt-lighting"].researched then
+                global.Mod.EnabledForForce[force.name] = true
+            else
+                global.Mod.EnabledForForce[force.name] = false
+            end
+        end
+    else
+        for _, force in pairs(game.forces) do
+            global.Mod.EnabledForForce[force.name] = true
         end
     end
 end
