@@ -1,6 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 17.1.5
 Date: 2019-03-23
+  Features:
+    - Optional research added that unlocks the feature. Has a very temporary graphic.
   Info:
     - Updated changelog to 0.17 format
     - Returned mod versioning to correct order
