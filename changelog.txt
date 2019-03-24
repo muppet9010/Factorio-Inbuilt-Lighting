@@ -1,27 +1,53 @@
-17.0.0
-	Requires and made code compatible with 0.17 Factorio
-	No function changes from the 0.16 Factorio (0.1.3) version
----------------------------------------------------
-
-0.1.3 - Last 0.16 compatible version
-	Fixed: power poles are blueprintable, no longer blocked by hidden lights
-	Fixed: power poles are fast replaceable, no longer blocked by hidden lights
----------------------------------------------------
-
-0.1.2
-	Added: Support for Picker Extended's Dolly feature.
-	Added: Command to reset all of this mods entities on the map. Used for recovery after unsupported other mod actions. Command name: inbuilt-lighting-reset
-------------------------------------------------------------------------------------------------------
-
-0.1.1
-	Added: Supports Creative Mode mod's instant deconstruction and blueprinting options.
-	Added: Optional power usage per light in Watts. Defaults to 0. Has to be startup setting.
-	Added: Option to have turrets lit. UPS advisory in readme and settings description.
-	Changed: Power Pole lighted area setting changed to be Map setting from Startup setting. So it can be changed mid game now. Note: old setting value is lost on upgrade.
-	Changed: Lights for all sizes are created at start and dynamically matched to buildings at map start to avoid potential compatibility issues with other mods that add/change power poles late in game engine start up.
-	Fixed: Multiplayer Compatible.
 ---------------------------------------------------------------------------------------------------
+Version: 17.1.5
+Date: 2019-03-23
+  Features:
+    - Optional research added that unlocks the feature. Has a very temporary graphic.
+  Info:
+    - Updated changelog to 0.17 format
+    - Returned mod versioning to correct order
+    - Refactored code to be complaint with luacheck
+    - Changed code to utilise my utily library
+    - Removed work around for 0.16 surface filtered search API bug
+    - Added support for script_raised events for better inter-mod compatibility
 
-0.1.0
-	Initial Release
-	Supports Power Poles with variable percentage of powered area lit up. Free power and free lights.
+---------------------------------------------------------------------------------------------------
+Version: 17.0.0
+Date: 2019-03-03
+  Features:
+    - Requires and made code compatible with 0.17 Factorio
+    - No function changes from the 0.16 Factorio (0.1.3) version
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.3
+Date: 2019-01-13
+  Bugfixes:
+    - Power poles are blueprintable, no longer blocked by hidden lights
+    - Power poles are fast replaceable, no longer blocked by hidden lights
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.2
+Date: 2018-11-17
+  Features:
+    - Support for Picker Extended's Dolly feature.
+    - Command to reset all of this mods entities on the map. Used for recovery after unsupported other mod actions. Command name: inbuilt-lighting-reset
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+Date: 2018-11-05
+  Features:
+    - Supports Creative Mode mod's instant deconstruction and blueprinting options.
+    - Optional power usage per light in Watts. Defaults to 0. Has to be startup setting.
+    - Option to have turrets lit. UPS advisory in readme and settings description.
+  Changes:
+    - Power Pole lighted area setting changed to be Map setting from Startup setting. So it can be changed mid game now. Note: old setting value is lost on upgrade.
+    - Lights for all sizes are created at start and dynamically matched to buildings at map start to avoid potential compatibility issues with other mods that add/change power poles late in game engine start up.
+  Bugfixes:
+    - Multiplayer Compatible.
+
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 2018-10-11
+  Features:
+    - Initial Release
+    - Supports Power Poles with variable percentage of powered area lit up. Free power and free lights.
