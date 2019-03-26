@@ -3,6 +3,8 @@ Version: 17.1.6
 Date: 2019-03-26
   Features:
     - Compatible with Xander Mod
+  Info:
+    - Added "not-upgradable" flag to hidden entities to ensure Upgrade Planner doesn't select them.
 ---------------------------------------------------------------------------------------------------
 Version: 17.1.5
 Date: 2019-03-23
