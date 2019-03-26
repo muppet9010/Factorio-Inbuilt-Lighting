@@ -35,6 +35,7 @@ local function GenerateHiddenLight(tile, name)
     end
     hiddenLight.energy_source.render_no_network_icon = false
     hiddenLight.energy_source.render_no_power_icon = false
+	hiddenLight.next_upgrade = nil --added to be compatible with Xander Mod
     return hiddenLight
 end
 
@@ -62,6 +63,7 @@ local function GenerateHiddenLightEletricPole()
         height = 1,
         direction_count = 4
     }
+	hiddenLightPole.next_upgrade = nil --added to be compatible with Xander Mod
     data:extend({hiddenLightPole})
 end
 
