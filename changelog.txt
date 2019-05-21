@@ -1,4 +1,12 @@
 ---------------------------------------------------------------------------------------------------
+Version: 17.1.7
+Date: 2019-05-21
+  Features:
+  Changes:
+  Bugfixes:
+    - handles power poles with suppy area of 0 without error. doesn't light them up. Fixes compatibility with cargoship mod.
+  Info:
+---------------------------------------------------------------------------------------------------
 Version: 17.1.6
 Date: 2019-03-26
   Features:
