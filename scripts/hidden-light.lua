@@ -93,7 +93,7 @@ function HiddenLight.UpdatedElectricPoleSetting()
     local entityTypesTable = {["electric-pole"] = true}
     for power_pole_name, power_pole in pairs(game.entity_prototypes) do
         if entityTypesTable[power_pole.type] ~= nil and entityTypesTable[power_pole.type] == true then
-            if powerPoleWireReachLightedMultiplier > 0 then
+            if powerPoleWireReachLightedMultiplier > 0 and power_pole.supply_area_distance > 0 then
                 local lightedDistance = math.ceil(power_pole.supply_area_distance * powerPoleWireReachLightedMultiplier)
                 lightedDistance = math.min(lightedDistance, 75)
                 global.Mod.EntityToLightName[power_pole_name] = "hiddenlight-" .. lightedDistance

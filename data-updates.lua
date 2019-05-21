@@ -1,5 +1,5 @@
 --[[
-	Done as a data-update to catch other mods added power poles. but still allowing other mods to manipulate the base lamp before we clone it. ie: change turn on/off times.
+	Done as a data-update to allow other mods to manipulate the base lamp before we clone it. ie: change turn on/off times.
 ]]
 local Constants = require("constants")
 
