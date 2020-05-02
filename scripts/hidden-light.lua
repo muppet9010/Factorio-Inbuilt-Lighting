@@ -144,9 +144,6 @@ function HiddenLight.RemoveAllModEntities()
 end
 
 function HiddenLight.OnResearchFinished(technology)
-    if technology.name ~= "inbuilt-lighting" then
-        return
-    end
     global.Mod.EnabledForForce[technology.force.name] = true
 end
 

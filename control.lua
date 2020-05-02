@@ -83,7 +83,11 @@ local function OnRobotPreMined(event)
 end
 
 local function OnResearchFinished(event)
-    HiddenLight.OnResearchFinished(event.research)
+    local technology = event.research
+    if technology.name ~= "inbuilt-lighting" then
+        return
+    end
+    HiddenLight.OnResearchFinished(technology)
     UpdateSetting(nil)
 end
 
