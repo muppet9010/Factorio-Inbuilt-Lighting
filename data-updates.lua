@@ -3,6 +3,8 @@
 ]]
 local Constants = require("constants")
 
+local light_brightness = settings.startup["inbuilt_lighting-light_brightness"].value
+
 local function GenerateHiddenLight(tile, name)
     if name == nil then
         name = tile
@@ -26,7 +28,7 @@ local function GenerateHiddenLight(tile, name)
         width = 1,
         height = 1
     }
-    hiddenLight.light = {intensity = 0.6, size = lightRange, color = {r = 1.0, g = 1.0, b = 1.0}}
+    hiddenLight.light = {intensity = light_brightness, size = lightRange, color = {r = 1.0, g = 1.0, b = 1.0}}
     if settings.startup["light-power-usage-watts"].value > 0 then
         hiddenLight.energy_usage_per_tick = settings.startup["light-power-usage-watts"].value .. "W"
     else
