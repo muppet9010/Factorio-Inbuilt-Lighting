@@ -4,6 +4,7 @@ Date: 2020-10-xxxxx
   Features:
   Changes:
   Bugfixes:
+    - Fix error for power pole entities that aren't valid (encountered after other mods removed).
   Info:
 ---------------------------------------------------------------------------------------------------
 Version: 18.1.9
