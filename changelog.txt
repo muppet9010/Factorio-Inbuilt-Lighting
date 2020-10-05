@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 19.1.10
+Date: 2020-10-05
+  Features:
+    - Add mod setting to control light brightness.
+  Changes:
+  Bugfixes:
+    - Fix error for power pole entities that aren't valid (encountered after other mods removed).
+  Info:
+---------------------------------------------------------------------------------------------------
 Version: 18.1.9
 Date: 2020-05-02
   Features:

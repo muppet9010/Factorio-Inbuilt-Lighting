@@ -14,6 +14,15 @@ data:extend(
             default_value = false,
             setting_type = "startup",
             order = "1001"
+        },
+        {
+            name = "inbuilt_lighting-light_brightness",
+            type = "double-setting",
+            default_value = 0.6,
+            minimum_value = 0,
+            maximum_value = 1,
+            setting_type = "startup",
+            order = "1002"
         }
     }
 )

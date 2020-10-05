@@ -8,7 +8,7 @@ function HiddenLight.FindEntitiePrototypeRadius(entityPrototype)
 end
 
 function HiddenLight.OnEntityBuilt(entity)
-    if entity.force.ai_controllable == true then
+    if not entity.valid or entity.force.ai_controllable == true then
         return
     end
     local entityLightName = global.Mod.EntityToLightName[entity.name]
@@ -61,7 +61,7 @@ function HiddenLight.UpdateHiddenLightsForEntityType(entityTypesTable)
     local entityTypesArray = Utils.TableKeyToArray(entityTypesTable)
     for _, surface in pairs(game.surfaces) do
         for _, mainEntity in pairs(surface.find_entities_filtered {type = entityTypesArray}) do
-            if mainEntity.force.ai_controllable == false and mainEntity.name ~= "hiddenlightpole" then
+            if mainEntity.valid and mainEntity.force.ai_controllable == false and mainEntity.name ~= "hiddenlightpole" then
                 local expectedHiddenLightName = global.Mod.EntityToLightName[mainEntity.name]
                 local correctLightFound = false
                 for _, lightEntity in pairs(
