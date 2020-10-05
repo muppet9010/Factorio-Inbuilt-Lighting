@@ -1,7 +1,6 @@
 # Factorio-Inbuilt-Lighting
 
 
-
 Options to add a free inbuilt light to power poles and optionally turrets that can use no power and run without a power connection, or can have a power cost set. Is a pure QOL mod designed for streamers, youtube or anyone who wants to be able to see their base early game when zoomed out. Its intended for use before night vision goggles, and then when the lighting settings are turned off it removes all of the inbuilt lighting so night vision looks natural. There is the option to require a cheap early game research to unlock the feature.
 
 

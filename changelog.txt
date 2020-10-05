@@ -1,6 +1,6 @@
 ---------------------------------------------------------------------------------------------------
 Version: 19.1.10
-Date: 2020-10-xxxxx
+Date: 2020-10-05
   Features:
     - Add mod setting to control light brightness.
   Changes:
