@@ -32,11 +32,3 @@ Support for mods that place & move entities in the map:
 	* Picker Extended - Dollies feature
 
 Should mod compatibility issues occur the command "inbuilt-lighting-reset" is included to tidy up any legacy issues that had occurred prior to support being added. It removes and then re-adds all inbuilt lighting entities on the map.
-
-
-Factorio Bugs and Oddities with 0.16 Factorio Only
-----------------------
-
-Note: power usage graph of low powered lights (watts) may appear slighly off. Logged as bug with developers: https://forums.factorio.com/viewtopic.php?f=7&t=63153
-The mod should be fully multiplayer compatible and multi force compatible, however this hasn't been tested.
-The issue around turrets and UPS impact is caused by the Factorio game engine needing a light to be connected to an eletric network. As we don't want free power poles everywhere turrets have mini ones created for them. With each turret having its own electric network this can add up and cause higher CPU usage in the game.
