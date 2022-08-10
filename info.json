@@ -9,5 +9,5 @@
     "dependencies": [
         "base >= 1.1"
     ],
-    "description": "Adds free lighting to power poles and optionally turrets as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision"
+    "description": "Adds free lighting to power poles and optionally turrets as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision. Blueprint friendly as they are regular power poles."
 }
