@@ -1,0 +1,3 @@
+Xander # Another mod.
+hiddenlight # Entity name.
+hiddenlightpole # Entity name.

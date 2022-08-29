@@ -1,8 +1,8 @@
 # Factorio-Inbuilt-Lighting
 
 
-- Options to add a free inbuilt light to power poles and optionally turrets that can use no power and run without a power connection, or can have a power cost set. 
-- Is a pure QOL mod designed for streamers, youtube or anyone who wants to be able to see their base early game when zoomed out. 
+- Options to add a free inbuilt light to power poles and optionally turrets that can use no power and run without a power connection, or can have a power cost set.
+- Is a pure QOL mod designed for streamers, YouTube or anyone who wants to be able to see their base early game when zoomed out.
 - Its intended for use before night vision goggles, and then when the lighting settings are turned off it removes all of the inbuilt lighting so night vision looks natural.
 - Blueprint friendly as they are regular power poles, so no modded entities in your exported Blueprint, just no lights either.
 
@@ -22,7 +22,7 @@ There is a setting to control how much power each inbuilt light requires. It def
 Limitations
 -----------
 
-The maxiumum lighted radius is limited to 75 due to the Factorio game engine.
+The maximum lighted radius is limited to 75 due to the Factorio game engine.
 Lights in Factorio illuminate the in-game picture you see and so tall building pictures may be half in light and half out, despite their footprint being fully within the lighted area.
 If the lights have a power usage set then the Electric Network Info screen will have 1 listing for each radius of light present (1 entry per power pole type). This is unavoidable in the Factorio engine.
 

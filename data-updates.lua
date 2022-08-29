@@ -12,8 +12,8 @@ local function GenerateHiddenLight(tile, name)
     local lightRange = tile * 5
     local hiddenLight = table.deepcopy(data.raw["lamp"]["small-lamp"])
     hiddenLight.name = "hiddenlight-" .. name
-    hiddenLight.collision_mask = {}
-    hiddenLight.flags = {"not-blueprintable", "not-deconstructable", "placeable-off-grid", "not-on-map", "not-upgradable"}
+    hiddenLight.collision_mask = {} -- So nothing can collide with it and do damage.
+    hiddenLight.flags = { "not-blueprintable", "not-deconstructable", "placeable-off-grid", "not-on-map", "not-upgradable", "not-in-kill-statistics" } -- So if it should die somehow (script?) it still won't appear in any kills/losses list.
     hiddenLight.selection_box = nil --makes a nice cross on the powered area rather than a default sized box
     hiddenLight.selectable_in_game = false
     hiddenLight.picture_off = {
@@ -28,7 +28,7 @@ local function GenerateHiddenLight(tile, name)
         width = 1,
         height = 1
     }
-    hiddenLight.light = {intensity = light_brightness, size = lightRange, color = {r = 1.0, g = 1.0, b = 1.0}}
+    hiddenLight.light = { intensity = light_brightness, size = lightRange, color = { r = 1.0, g = 1.0, b = 1.0 } }
     if settings.startup["light-power-usage-watts"].value > 0 then
         hiddenLight.energy_usage_per_tick = settings.startup["light-power-usage-watts"].value .. "W"
     else
@@ -37,7 +37,7 @@ local function GenerateHiddenLight(tile, name)
     end
     hiddenLight.energy_source.render_no_network_icon = false
     hiddenLight.energy_source.render_no_power_icon = false
-    hiddenLight.next_upgrade = nil --added to be compatible with Xander Mod
+    hiddenLight.next_upgrade = nil -- Added to be compatible with Xander Mod
     return hiddenLight
 end
 
@@ -50,11 +50,11 @@ local function GenerateHiddenLights()
 end
 
 --Used to connect the hidden lights when there is no electric network there and no power usage set (work around engine feature)
-local function GenerateHiddenLightEletricPole()
+local function GenerateHiddenLightElectricPole()
     local hiddenLightPole = table.deepcopy(data.raw["electric-pole"]["small-electric-pole"])
     hiddenLightPole.name = "hiddenlightpole"
-    hiddenLightPole.collision_mask = {}
-    hiddenLightPole.flags = {"not-blueprintable", "not-deconstructable", "placeable-off-grid", "not-on-map", "not-upgradable"}
+    hiddenLightPole.collision_mask = {} -- So nothing can collide with it and do damage.
+    hiddenLightPole.flags = { "not-blueprintable", "not-deconstructable", "placeable-off-grid", "not-on-map", "not-upgradable", "not-in-kill-statistics" } -- So if it should die somehow (script?) it still won't appear in any kills/losses list.
     hiddenLightPole.selectable_in_game = false
     hiddenLightPole.maximum_wire_distance = 0
     hiddenLightPole.supply_area_distance = 0.1
@@ -65,9 +65,9 @@ local function GenerateHiddenLightEletricPole()
         height = 1,
         direction_count = 4
     }
-    hiddenLightPole.next_upgrade = nil --added to be compatible with Xander Mod
-    data:extend({hiddenLightPole})
+    hiddenLightPole.next_upgrade = nil -- Added to be compatible with Xander Mod.
+    data:extend({ hiddenLightPole })
 end
 
 GenerateHiddenLights()
-GenerateHiddenLightEletricPole()
+GenerateHiddenLightElectricPole()

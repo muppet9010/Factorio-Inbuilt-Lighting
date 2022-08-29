@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 20.1.12
+Date: 2022-08-29
+  Features:
+  Changes:
+  Bugfixes:
+    - Stopped some edge cases (atomic bomb) that could kill the lamp of a power pole.
+    - Prevented any lights that are killed (by script ?) showing in the kill/loss screen.
+  Info:
+---------------------------------------------------------------------------------------------------
 Version: 20.1.11
 Date: 2020-11-26
   Features:

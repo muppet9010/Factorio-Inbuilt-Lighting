@@ -1,6 +1,6 @@
 {
     "name": "inbuilt_lighting",
-    "version": "20.1.11",
+    "version": "20.1.12",
     "title": "Inbuilt Lighting",
     "author": "Muppet9010",
     "contact": "",
@@ -9,5 +9,5 @@
     "dependencies": [
         "base >= 1.1"
     ],
-    "description": "Adds free lighting to power poles and optionally turrets as a QOL feature. Intended for map/zoomed out view and streaming/youtube pre night vision. Blueprint friendly as they are regular power poles."
+    "description": "Adds free lighting to power poles and optionally turrets as a QOL feature. Intended for map/zoomed out view and streaming/YouTube pre night vision. Blueprint friendly as they are regular power poles."
 }

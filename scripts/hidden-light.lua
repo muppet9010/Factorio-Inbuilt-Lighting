@@ -1,7 +1,7 @@
 local HiddenLight = {}
 local Utils = require("utility/utils")
 
-function HiddenLight.FindEntitiePrototypeRadius(entityPrototype)
+function HiddenLight.FindEntityPrototypeRadius(entityPrototype)
     local xRange = entityPrototype.collision_box.right_bottom.x - entityPrototype.collision_box.left_top.x
     local yRange = entityPrototype.collision_box.right_bottom.y - entityPrototype.collision_box.left_top.y
     return math.max(xRange, yRange) / 2
@@ -18,18 +18,29 @@ function HiddenLight.OnEntityBuilt(entity)
     if entity.force == nil or not global.Mod.EnabledForForce[entity.force.name] then
         return
     end
+    local position, force, surface = entity.position, entity.force, entity.surface
     if entity.type ~= "electric-pole" then
-        entity.surface.create_entity {
+        local hiddenElectricPole = surface.create_entity {
             name = "hiddenlightpole",
-            position = entity.position,
-            force = entity.force
+            position = position,
+            force = force
         }
+        if hiddenElectricPole ~= nil then
+            hiddenElectricPole.destructible = false -- Needed so anything that does damage ignoring the collision mask (atomic bombs) doesn't kill it.
+        else
+            game.print("ERROR - Inbuilt lighting failed to place Hidden Electric Pole at: " .. position.x .. ", " .. position.y)
+        end
     end
-    entity.surface.create_entity {
+    local hiddenLight = surface.create_entity {
         name = entityLightName,
-        position = entity.position,
-        force = entity.force
+        position = position,
+        force = force
     }
+    if hiddenLight ~= nil then
+        hiddenLight.destructible = false -- Needed so anything that does damage ignoring the collision mask (atomic bombs) doesn't kill it.
+    else
+        game.print("ERROR - Inbuilt lighting failed to place Hidden Light at: " .. position.x .. ", " .. position.y)
+    end
 end
 
 function HiddenLight.OnEntityRemoved(entity, positionToCheckOverride)
@@ -43,15 +54,15 @@ function HiddenLight.OnEntityRemoved(entity, positionToCheckOverride)
     if entity.force == nil or not global.Mod.EnabledForForce[entity.force.name] then
         return
     end
-    local position = entity.position
+    local position, surface = entity.position, entity.surface
     if positionToCheckOverride ~= nil then
         position = positionToCheckOverride
     end
-    local hiddenLightEntity = entity.surface.find_entity(hiddenLightName, position)
+    local hiddenLightEntity = surface.find_entity(hiddenLightName, position)
     if hiddenLightEntity ~= nil then
         hiddenLightEntity.destroy()
     end
-    local entityLightPole = entity.surface.find_entity("hiddenlightpole", position)
+    local entityLightPole = surface.find_entity("hiddenlightpole", position)
     if entityLightPole ~= nil then
         entityLightPole.destroy()
     end
@@ -60,7 +71,7 @@ end
 function HiddenLight.UpdateHiddenLightsForEntityType(entityTypesTable)
     local entityTypesArray = Utils.TableKeyToArray(entityTypesTable)
     for _, surface in pairs(game.surfaces) do
-        for _, mainEntity in pairs(surface.find_entities_filtered {type = entityTypesArray}) do
+        for _, mainEntity in pairs(surface.find_entities_filtered { type = entityTypesArray }) do
             if mainEntity.valid and mainEntity.force.ai_controllable == false and mainEntity.name ~= "hiddenlightpole" then
                 local expectedHiddenLightName = global.Mod.EntityToLightName[mainEntity.name]
                 local correctLightFound = false
@@ -90,7 +101,7 @@ end
 
 function HiddenLight.UpdatedElectricPoleSetting()
     local powerPoleWireReachLightedMultiplier = tonumber(settings.global["power-pole-wire-reach-lighted-percent"].value) / 100
-    local entityTypesTable = {["electric-pole"] = true}
+    local entityTypesTable = { ["electric-pole"] = true }
     for power_pole_name, power_pole in pairs(game.entity_prototypes) do
         if entityTypesTable[power_pole.type] ~= nil and entityTypesTable[power_pole.type] == true then
             if powerPoleWireReachLightedMultiplier > 0 and power_pole.supply_area_distance > 0 then
@@ -108,15 +119,15 @@ end
 
 function HiddenLight.UpdatedTurretSetting()
     local edgeLitTiles = tonumber(settings.global["turrets-lighted-edge-tiles"].value)
-    local entityTypesTable = {["turret"] = true, ["ammo-turret"] = true, ["electric-turret"] = true, ["fluid-turret"] = true, ["artillery-turret"] = true}
+    local entityTypesTable = { ["turret"] = true, ["ammo-turret"] = true, ["electric-turret"] = true, ["fluid-turret"] = true, ["artillery-turret"] = true }
     for turret_name, turret in pairs(game.entity_prototypes) do
         if entityTypesTable[turret.type] ~= nil and entityTypesTable[turret.type] == true then
             if edgeLitTiles >= 0 then
                 local lightedDistance
                 if edgeLitTiles > 0 then
-                    lightedDistance = math.ceil(HiddenLight.FindEntitiePrototypeRadius(turret) + (edgeLitTiles))
+                    lightedDistance = math.ceil(HiddenLight.FindEntityPrototypeRadius(turret) + (edgeLitTiles))
                 else
-                    lightedDistance = math.ceil(HiddenLight.FindEntitiePrototypeRadius(turret))
+                    lightedDistance = math.ceil(HiddenLight.FindEntityPrototypeRadius(turret))
                 end
                 lightedDistance = math.min(lightedDistance, 75)
                 global.Mod.EntityToLightName[turret_name] = "hiddenlight-" .. lightedDistance
