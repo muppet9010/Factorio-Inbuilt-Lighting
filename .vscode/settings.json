@@ -35,6 +35,28 @@
         "c:\\FactorioModding\\factorio-api",
         "c:\\FactorioModding\\data",
         "c:\\FactorioModding\\data\\core\\lualib",
-        "c:\\FactorioModding\\runtime-api"
-    ]
+        "c:\\FactorioModding\\runtime-api",
+        "c:/Users/mikeh/AppData/Roaming/Code/User/workspaceStorage/c19963fb8372ff04fa772be3b90caeac/justarandomgeek.factoriomod-debug/sumneko-3rd/factorio/library",
+        "/utility", // Needed as we ignored it for errors.
+    ],
+    "Lua.workspace.ignoreDir": [
+        ".vscode",
+        "/utility/*", // Exclude it as we its an old version and we aren't going to update it right now.
+    ],
+    "Lua.workspace.userThirdParty": [
+        "c:\\Users\\mikeh\\AppData\\Roaming\\Code\\User\\workspaceStorage\\c19963fb8372ff04fa772be3b90caeac\\justarandomgeek.factoriomod-debug\\sumneko-3rd"
+    ],
+    "Lua.runtime.builtin": {
+        "io": "disable",
+        "os": "disable",
+        "math": "disable",
+        "debug": "disable",
+        "coroutine": "disable",
+        "package": "disable"
+    },
+    "Lua.runtime.special": {
+        "__object_name": "type"
+    },
+    "Lua.runtime.plugin": "c:/Users/mikeh/AppData/Roaming/Code/User/workspaceStorage/c19963fb8372ff04fa772be3b90caeac/justarandomgeek.factoriomod-debug/sumneko-3rd/factorio/plugin.lua",
+    "Lua.workspace.checkThirdParty": false
 }

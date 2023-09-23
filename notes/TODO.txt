@@ -1,0 +1,5 @@
+Next:
+
+
+Possible Future:
+    - Add option for power usage per radius size as well as the current generic cost option. No one has asked for this however.
