@@ -115,14 +115,26 @@ end
 
 --- Called when the light size has been changed and needs to be calculated and applied to the map.
 function HiddenLight.UpdatedElectricPoleSetting()
-    local powerPoleWireReachLightedMultiplier = tonumber(settings.global["power-pole-wire-reach-lighted-percent"].value) / 100
+    local powerPolePoweredAreaLightedMultiplier = tonumber(settings.global["power-pole-powered-area-lighted-percent"].value) / 100
+    local powerPoleConnectionReachLightedMultiplier = tonumber(settings.global["power-pole-connection-reach-lighted-percent"].value) / 100
     local entityTypesTable = { ["electric-pole"] = true }
     --TODO: why don't we use a filtered list here from Factorio?
     for power_pole_name, power_pole in pairs(game.entity_prototypes) do
         if entityTypesTable[power_pole.type] ~= nil and entityTypesTable[power_pole.type] == true then
-            if powerPoleWireReachLightedMultiplier > 0 and power_pole.supply_area_distance > 0 then
-                local lightedDistance = math.ceil(power_pole.supply_area_distance * powerPoleWireReachLightedMultiplier)
-                lightedDistance = math.min(lightedDistance, 75)
+            local lightedAreaDistance, lightedReachDistance = 0, 0
+            if powerPolePoweredAreaLightedMultiplier > 0 and power_pole.supply_area_distance > 0 then
+                -- The supply_area_distance is the diameter from the power pole.
+                lightedAreaDistance = math.ceil(power_pole.supply_area_distance * powerPolePoweredAreaLightedMultiplier)
+                lightedAreaDistance = math.min(lightedAreaDistance, 75) -- Max light size of 75.
+            end
+            if powerPoleConnectionReachLightedMultiplier > 0 and power_pole.max_wire_distance > 0 then
+                -- The max_wire_distance is the distance between 2 power poles, so it's double the radius of any single power pole.
+                lightedReachDistance = math.ceil((power_pole.max_wire_distance * 0.5) * powerPoleConnectionReachLightedMultiplier)
+                lightedReachDistance = math.min(lightedReachDistance, 75) -- Max light size of 75.
+            end
+            -- The light size is the diameter, centered on the power pole.
+            local lightedDistance = math.max(lightedAreaDistance, lightedReachDistance)
+            if lightedDistance > 0 then
                 global.Mod.EntityToLightName[power_pole_name] = "hiddenlight-" .. lightedDistance
             else
                 global.Mod.EntityToLightName[power_pole_name] = nil

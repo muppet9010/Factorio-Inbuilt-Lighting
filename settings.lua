@@ -30,7 +30,7 @@ data:extend(
 data:extend(
     {
         {
-            name = "power-pole-wire-reach-lighted-percent",
+            name = "power-pole-powered-area-lighted-percent",
             type = "int-setting",
             default_value = 100,
             minimum_value = 0,
@@ -38,12 +38,21 @@ data:extend(
             order = "1001"
         },
         {
+            -- Don't name `power-pole-wire-reach-lighted-percent` as this was an old setting name and so might go odd from older migrations.
+            name = "power-pole-connection-reach-lighted-percent",
+            type = "int-setting",
+            default_value = 0,
+            minimum_value = 0,
+            setting_type = "runtime-global",
+            order = "1002"
+        },
+        {
             name = "turrets-lighted-edge-tiles",
             type = "int-setting",
             default_value = -1,
             minimum_value = -1,
             setting_type = "runtime-global",
-            order = "1002"
+            order = "1003"
         }
     }
 )

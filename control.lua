@@ -3,7 +3,7 @@ local Utils = require("utility/utils")
 
 ---@param settingName string?
 local function UpdateSetting(settingName)
-    if settingName == "power-pole-wire-reach-lighted-percent" or settingName == nil then
+    if settingName == "power-pole-powered-area-lighted-percent" or settingName == "power-pole-connection-reach-lighted-percent" or settingName == nil then
         HiddenLight.UpdatedElectricPoleSetting()
     end
     if settingName == "turrets-lighted-edge-tiles" or settingName == nil then

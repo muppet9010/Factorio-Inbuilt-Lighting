@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 20.1.13
-Date: 2022-XX-XX
+Date: 2023-09-23
   Features:
+    - Added option to set power pole lighted area via wire connection reach. The greater of the powered area and the connection reach will be used per pole. Enabling either powered area, connection reach or both to be used. Default setting remains to just do powered area only.
   Changes:
   Bugfixes:
   Info:
