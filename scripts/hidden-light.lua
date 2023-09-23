@@ -1,12 +1,16 @@
 local HiddenLight = {}
 local Utils = require("utility/utils")
 
+---@param entityPrototype LuaEntityPrototype
+---@return double
 function HiddenLight.FindEntityPrototypeRadius(entityPrototype)
     local xRange = entityPrototype.collision_box.right_bottom.x - entityPrototype.collision_box.left_top.x
     local yRange = entityPrototype.collision_box.right_bottom.y - entityPrototype.collision_box.left_top.y
     return math.max(xRange, yRange) / 2
 end
 
+--- When an entity is built on the map.
+---@param entity LuaEntity
 function HiddenLight.OnEntityBuilt(entity)
     if not entity.valid or entity.force.ai_controllable == true then
         return
@@ -20,22 +24,26 @@ function HiddenLight.OnEntityBuilt(entity)
     end
     local position, force, surface = entity.position, entity.force, entity.surface
     if entity.type ~= "electric-pole" then
-        local hiddenElectricPole = surface.create_entity {
+        ---@diagnostic disable: missing-fields # create_entity Factorio object definition expects too much.
+        local hiddenElectricPole = surface.create_entity({
             name = "hiddenlightpole",
             position = position,
             force = force
-        }
+        })
+        ---@diagnostic enable: missing-fields # create_entity Factorio object definition expects too much.
         if hiddenElectricPole ~= nil then
             hiddenElectricPole.destructible = false -- Needed so anything that does damage ignoring the collision mask (atomic bombs) doesn't kill it.
         else
             game.print("ERROR - Inbuilt lighting failed to place Hidden Electric Pole at: " .. position.x .. ", " .. position.y)
         end
     end
-    local hiddenLight = surface.create_entity {
+    ---@diagnostic disable: missing-fields # create_entity Factorio object definition expects too much.
+    local hiddenLight = surface.create_entity({
         name = entityLightName,
         position = position,
         force = force
-    }
+    })
+    ---@diagnostic enable: missing-fields # create_entity Factorio object definition expects too much.
     if hiddenLight ~= nil then
         hiddenLight.destructible = false -- Needed so anything that does damage ignoring the collision mask (atomic bombs) doesn't kill it.
     else
@@ -43,6 +51,9 @@ function HiddenLight.OnEntityBuilt(entity)
     end
 end
 
+--- When an entity is removed from the map.
+---@param entity LuaEntity
+---@param positionToCheckOverride MapPosition?
 function HiddenLight.OnEntityRemoved(entity, positionToCheckOverride)
     if entity.force.ai_controllable == true then
         return
@@ -68,6 +79,9 @@ function HiddenLight.OnEntityRemoved(entity, positionToCheckOverride)
     end
 end
 
+--- Replace all the lights on an entity type to the current light size.
+--- TODO: entityTypesTable should come in as an array as part of overhaul i think.
+---@param entityTypesTable table<string, true>
 function HiddenLight.UpdateHiddenLightsForEntityType(entityTypesTable)
     local entityTypesArray = Utils.TableKeyToArray(entityTypesTable)
     for _, surface in pairs(game.surfaces) do
@@ -99,9 +113,11 @@ function HiddenLight.UpdateHiddenLightsForEntityType(entityTypesTable)
     end
 end
 
+--- Called when the light size has been changed and needs to be calculated and applied to the map.
 function HiddenLight.UpdatedElectricPoleSetting()
     local powerPoleWireReachLightedMultiplier = tonumber(settings.global["power-pole-wire-reach-lighted-percent"].value) / 100
     local entityTypesTable = { ["electric-pole"] = true }
+    --TODO: why don't we use a filtered list here from Factorio?
     for power_pole_name, power_pole in pairs(game.entity_prototypes) do
         if entityTypesTable[power_pole.type] ~= nil and entityTypesTable[power_pole.type] == true then
             if powerPoleWireReachLightedMultiplier > 0 and power_pole.supply_area_distance > 0 then
@@ -117,13 +133,14 @@ function HiddenLight.UpdatedElectricPoleSetting()
     HiddenLight.UpdateHiddenLightsForEntityType(entityTypesTable)
 end
 
+--- Called when the turret lighting setting is changed.
 function HiddenLight.UpdatedTurretSetting()
     local edgeLitTiles = tonumber(settings.global["turrets-lighted-edge-tiles"].value)
     local entityTypesTable = { ["turret"] = true, ["ammo-turret"] = true, ["electric-turret"] = true, ["fluid-turret"] = true, ["artillery-turret"] = true }
     for turret_name, turret in pairs(game.entity_prototypes) do
         if entityTypesTable[turret.type] ~= nil and entityTypesTable[turret.type] == true then
             if edgeLitTiles >= 0 then
-                local lightedDistance
+                local lightedDistance ---@type int
                 if edgeLitTiles > 0 then
                     lightedDistance = math.ceil(HiddenLight.FindEntityPrototypeRadius(turret) + (edgeLitTiles))
                 else
@@ -139,11 +156,14 @@ function HiddenLight.UpdatedTurretSetting()
     HiddenLight.UpdateHiddenLightsForEntityType(entityTypesTable)
 end
 
+--- Called when Picker Dollies moves an entity.
+---@param event any -- Not typed as outside our mod.
 function HiddenLight.PickerDollyEntityMoved(event)
     HiddenLight.OnEntityRemoved(event.moved_entity, event.start_pos)
     HiddenLight.OnEntityBuilt(event.moved_entity)
 end
 
+--- Removes all modded lights from the map.
 function HiddenLight.RemoveAllModEntities()
     for _, surface in pairs(game.surfaces) do
         for _, entity in pairs(surface.find_entities()) do
@@ -154,10 +174,12 @@ function HiddenLight.RemoveAllModEntities()
     end
 end
 
-function HiddenLight.OnResearchFinished(technology)
+--- Called when the inbuilt lighting tech is researched.
+function HiddenLight.OnInbuiltLightsResearchFinished(technology)
     global.Mod.EnabledForForce[technology.force.name] = true
 end
 
+--- Update each forces enablement of inbuilt lighting based on the mod setting for if research is required and of the force has researched the tech.
 function HiddenLight.HandleResearchEnabledSetting()
     if settings.startup["research-unlock"].value then
         for _, force in pairs(game.forces) do

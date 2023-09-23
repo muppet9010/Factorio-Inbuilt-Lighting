@@ -1,3 +1,4 @@
 Xander # Another mod.
 hiddenlight # Entity name.
 hiddenlightpole # Entity name.
+deepcopy # The function on the `table` object.

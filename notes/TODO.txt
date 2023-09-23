@@ -1,0 +1,2 @@
+Next:
+    - Bunch of TODO's in code as its all very old. Not using newer Factorio API calls.
