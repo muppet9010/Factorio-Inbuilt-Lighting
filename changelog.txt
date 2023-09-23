@@ -6,7 +6,9 @@ Date: 2023-09-23
   Changes:
   Bugfixes:
   Info:
+    - Code base refactored to use some of the newer Factorio API facilities added over the years. Should reduce UPS impact, although it was very low before anyways.
     - Updated licence within mod to match Mod Portal.
+    - Code base updated with Sumneko typing.
 ---------------------------------------------------------------------------------------------------
 Version: 20.1.12
 Date: 2022-08-29
@@ -55,7 +57,7 @@ Date: 2019-05-21
   Features:
   Changes:
   Bugfixes:
-    - handles power poles with suppy area of 0 without error. doesn't light them up. Fixes compatibility with cargoship mod.
+    - Handles power poles with a supply area of 0 without erroring. Doesn't light them up. Fixes compatibility with the Cargo Ship mod.
   Info:
 ---------------------------------------------------------------------------------------------------
 Version: 17.1.6
@@ -73,7 +75,7 @@ Date: 2019-03-23
     - Updated changelog to 0.17 format
     - Returned mod versioning to correct order
     - Refactored code to be complaint with luacheck
-    - Changed code to utilise my utily library
+    - Changed code to utilise my utility library
     - Removed work around for 0.16 surface filtered search API bug
     - Added support for script_raised events for better inter-mod compatibility
 
