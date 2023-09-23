@@ -1,9 +1,13 @@
 # Factorio-Inbuilt-Lighting
 
 
-- Options to add a free inbuilt light to power poles and optionally turrets that can use no power and run without a power connection, or can have a power cost set.
+
+Features
+---------
+
+- Options to add a free inbuilt light to power poles. It can either use no power and run without a power connection, or have a configurable power usage.
+- Optionally can add a free inbuilt light to turrets. Various configuration options.
 - Is a pure QOL mod designed for streamers, YouTube or anyone who wants to be able to see their base early game when zoomed out.
-- Its intended for use before night vision goggles, and then when the lighting settings are turned off it removes all of the inbuilt lighting so night vision looks natural.
 - Blueprint friendly as they are regular power poles, so no modded entities in your exported Blueprint, just no lights either.
 
 
@@ -11,9 +15,11 @@
 Options
 ---------
 
-- The mod scales the light for each power pole based on its powering range. There is a global setting to increase/decrease this as a percentage from 0 to massive based on your desires. 0 turns off the inbuilt light entirely and removes them from the map (save any UPS).
-- The mod can light up turrets. If the feature is enabled it will light up the building plus the set number of tiles around the edge from 0 upwards. Note, large quantities of turrets (500+) with this feature enabled can impact UPS and cause game slowdown. Turn this feature off later in the game when turrets have power and power pole lighting is suitable.
-- There is a setting to control how much power each inbuilt light requires. It defaults to 0 watts, which means these lights are on without any power network being required. Anything above 0 watts requires active electricity for them to work and thus an active power network. There will never be any low power or no electric connection icons shown for the inbuilt lights regardless of the power usage setting.
+- The size of the light for each type of power pole is controlled by the mod settings for it's powering range and connection distance. The largest size between the powered ranged and connection distance is used. These settings allow from none to 100+ percent of each range to be used to set the light size. Defaults to 100% powered range, 0% connection distance.
+- The mod can light up turrets (default off). If the feature is enabled it will light up the building plus the set number of tiles around the edge from 0 upwards. Note, large quantities of turrets (500+) with this feature enabled can impact UPS and cause game slowdown. Turn this feature off later in the game when turrets have power and power pole lighting is suitable.
+- Option to add a power usage per light (defaults to no power usage). 0 power usage will work when not on a power network. Anything above 0 watts requires active electricity on a power network like regular lamps. There will never be any low power or no electric connection icons shown for the inbuilt lights regardless of the power usage setting.
+- Option to require a technology to enable inbuilt lighting (defaults not required).
+- Other minor options to fine tune the behavior and appearance of the lights.
 
 
 
