@@ -3,18 +3,18 @@
 ]]
 local Constants = require("constants")
 
-local light_brightness = settings.startup["inbuilt_lighting-light_brightness"].value
+local light_brightness = tonumber(settings.startup["inbuilt_lighting-light_brightness"].value) --[[@as double # 0-1]] ---@type double
 
 --- Create a hidden light prototype.
 ---@param tile int
 ---@param name int
----@return Prototype.Lamp
+---@return data.LampPrototype
 local function GenerateHiddenLight(tile, name)
     if name == nil then
         name = tile
     end
     local lightRange = tile * 5
-    local hiddenLight = table.deepcopy(data.raw["lamp"]["small-lamp"]) --[[@as Prototype.Lamp]]
+    local hiddenLight = table.deepcopy(data.raw["lamp"]["small-lamp"]) --[[@as data.LampPrototype]]
     hiddenLight.name = "hiddenlight-" .. name
     hiddenLight.collision_mask = {} -- So nothing can collide with it and do damage.
     hiddenLight.flags = { "not-blueprintable", "not-deconstructable", "placeable-off-grid", "not-on-map", "not-upgradable", "not-in-kill-statistics" } -- So if it should die somehow (script?) it still won't appear in any kills/losses list.
@@ -36,10 +36,10 @@ local function GenerateHiddenLight(tile, name)
     local energySourceType ---@type string
     if settings.startup["light-power-usage-watts"].value > 0 then
         energySourceType = "electric"
-        hiddenLight.energy_usage_per_tick = tostring(settings.startup["light-power-usage-watts"].value) .. "W" --[[@as Energy]]
+        hiddenLight.energy_usage_per_tick = tostring(settings.startup["light-power-usage-watts"].value) .. "W" --[[@as data.Energy]]
     else
         energySourceType = "void"
-        hiddenLight.energy_usage_per_tick = "1W" --[[@as Energy]] -- Must have a value > 0.
+        hiddenLight.energy_usage_per_tick = "1W" --[[@as data.Energy]] -- Must have a value > 0.
     end
     ---@diagnostic disable: inject-field # This seems to be a Sumneko bug: https://github.com/LuaLS/lua-language-server/issues/2341
     hiddenLight.energy_source.type = energySourceType
@@ -61,13 +61,14 @@ end
 
 --- Used to connect the hidden lights when there is no electric network there and no power usage set (work around engine feature)
 local function GenerateHiddenLightElectricPole()
-    local hiddenLightPole = table.deepcopy(data.raw["electric-pole"]["small-electric-pole"]) --[[@as Prototype.ElectricPole]]
+    local hiddenLightPole = table.deepcopy(data.raw["electric-pole"]["small-electric-pole"]) --[[@as data.ElectricPolePrototype]]
     hiddenLightPole.name = "hiddenlightpole"
     hiddenLightPole.collision_mask = {} -- So nothing can collide with it and do damage.
     hiddenLightPole.flags = { "not-blueprintable", "not-deconstructable", "placeable-off-grid", "not-on-map", "not-upgradable", "not-in-kill-statistics" } -- So if it should die somehow (script?) it still won't appear in any kills/losses list.
     hiddenLightPole.selectable_in_game = false
     hiddenLightPole.maximum_wire_distance = 0
     hiddenLightPole.supply_area_distance = 0.1
+    ---@diagnostic disable-next-line: missing-fields # Temporary work around until Factorio docs and FMTK updated to allow per type field specification.
     hiddenLightPole.pictures = {
         filename = Constants.AssetModName .. "/graphics/transparent.png",
         priority = "very-low",
