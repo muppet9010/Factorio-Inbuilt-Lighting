@@ -4,6 +4,7 @@ Date: 2023-10-18
   Features:
   Changes:
   Bugfixes:
+    - Try to protect against very rare non-reproducible error. https://mods.factorio.com/mod/inbuilt_lighting/discussion/652f265ff80ef72b6b7f0a95
   Info:
 ---------------------------------------------------------------------------------------------------
 Version: 20.1.13

@@ -124,7 +124,9 @@ function HiddenLight.UpdateHiddenLightsForEntityType(entityTypesList)
                 end
                 if not correctLightFound then
                     local entityLightPole = surface.find_entity("hiddenlightpole", mainEntity_position)
-                    if entityLightPole ~= nil then
+                    if entityLightPole ~= nil and entityLightPole ~= mainEntity then
+                        -- Not sure when the mainEntity could be the hiddenlightpole, but an error occurred with the mainEntity having been removed during its wider processing and this is my best guess. So protecting from removal in this case would be appropriate.
+                        -- https://mods.factorio.com/mod/inbuilt_lighting/discussion/652f265ff80ef72b6b7f0a95
                         entityLightPole.destroy()
                     end
                     HiddenLight.OnEntityBuilt(mainEntity)
